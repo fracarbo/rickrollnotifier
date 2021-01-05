@@ -6,7 +6,7 @@ class YtVideo:
     def getViews(self):
         try:
             import requests
-            api_key = "AIzaSyB77QZ1ZlIkie1IR7C0LICQyfrE5HmSlcc"
+            api_key = ""
             api_string = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=statistics" % (self.id, api_key)
             data = requests.get(api_string).json()
             views = data['items'][0]['statistics']['viewCount']
