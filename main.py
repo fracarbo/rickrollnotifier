@@ -1,30 +1,43 @@
-def getViews(id):
-    import requests
+class YtVideo:
 
-    api_key = "AIzaSyB77QZ1ZlIkie1IR7C0LICQyfrE5HmSlcc"
-    api_string = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=statistics" % (id, api_key)
-    data = requests.get(api_string).json()
-    views = data['items'][0]['statistics']['viewCount']
-    return views
+    def __init__(self, id):
+        self.id = id
 
-def notify_me(msg = 'Watched'):
-    from win10toast import ToastNotifier
-    toaster = ToastNotifier()
-    toaster.show_toast(msg, 'Someone watched your video!')
+    def getViews(self):
+        try:
+            import requests
+            api_key = "AIzaSyB77QZ1ZlIkie1IR7C0LICQyfrE5HmSlcc"
+            api_string = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=statistics" % (self.id, api_key)
+            data = requests.get(api_string).json()
+            views = data['items'][0]['statistics']['viewCount']
+            return views
+        except:
+            print('Error')
 
-def someoneWatched(id):
-    import time
+    def someoneWatched(self):
+        import time
 
-    views = getViews(id)
+        views = self.getViews()
+        while True:
+            time.sleep(10)
+            updated_views = self.getViews()
+            if updated_views > views:
+                return True
+            views = updated_views
+
+def notify_me(title = 'Watched', desc = 'Someone watched your video'):
+    try:
+        from win10toast import ToastNotifier
+        toaster = ToastNotifier()
+        toaster.show_toast(title, desc)
+    except:
+        print(title)
+        print(desc)  
+
+if __name__ == "__main__":
+    video_id = 'dQw4w9WgXcQ'
+    video = YtVideo(video_id)
+    print('Waiting...')
     while True:
-        time.sleep(10)
-        updated_views = getViews(id)
-        if updated_views > views:
-            return True
-        views = updated_views
-
-video_id = 'dQw4w9WgXcQ'
-print('Waiting...')
-while True:
-    if someoneWatched(video_id):
-        notify_me("Rickrolled")
+        if video.someoneWatched():
+            notify_me('Rickrolled', 'Someone has been rickrolled!')
