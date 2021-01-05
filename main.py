@@ -6,8 +6,8 @@ class YtVideo:
     def getViews(self):
         try:
             import requests
-            api_key = "AIzaSyB77QZ1ZlIkie1IR7C0LICQyfrE5HmSlcc"
-            api_string = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=statistics" % (self.id, api_key)
+            API_KEY = "YOTUBE_API_KEY"
+            api_string = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=statistics" % (self.id, API_KEY)
             data = requests.get(api_string).json()
             views = data['items'][0]['statistics']['viewCount']
             return views
@@ -35,8 +35,8 @@ def notify_me(title = 'Watched', desc = 'Someone watched your video'):
         print(desc)  
 
 if __name__ == "__main__":
-    video_id = 'dQw4w9WgXcQ'
-    video = YtVideo(video_id)
+    VIDEO_ID = 'dQw4w9WgXcQ'
+    video = YtVideo(VIDEO_ID)
     print('Waiting...')
     while True:
         if video.someoneWatched():
